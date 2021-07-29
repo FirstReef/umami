@@ -16,7 +16,9 @@ COPY package.json yarn.lock /build/
 RUN yarn install --production --frozen-lockfile --prefer-offline
 
 # Cache these modules for production
-RUN cp -R node_modules/ prod_node_modules/
+# Temporarily disabled to prevent memory exhaustion
+#RUN cp -R node_modules/ prod_node_modules/
+
 
 # Install development dependencies
 RUN yarn install --frozen-lockfile --prefer-offline
