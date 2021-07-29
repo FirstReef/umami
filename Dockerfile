@@ -8,16 +8,18 @@ ENV DATABASE_URL "postgresql://umami:umami@db:5432/umami" \
 WORKDIR /build
 
 RUN yarn config set --home enableTelemetry 0
+RUN yarn config set network-timeout 600000
+
 COPY package.json yarn.lock /build/
 
 # Install only the production dependencies
-RUN yarn install --production --frozen-lockfile
+RUN yarn install --production --frozen-lockfile --prefer-offline
 
 # Cache these modules for production
 RUN cp -R node_modules/ prod_node_modules/
 
 # Install development dependencies
-RUN yarn install --frozen-lockfile
+RUN yarn install --frozen-lockfile --prefer-offline
 
 COPY . /build
 RUN yarn next telemetry disable
